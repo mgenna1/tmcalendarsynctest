@@ -1,9 +1,10 @@
 # Vantaca → Google Calendar Sync
 
 A Python automation that keeps a Google Calendar in sync with a community
-association's Vantaca/CAMS resident portal, with **no manual work**. It's 
-designed to run on a daily schedule via GitHub Actions, mirroring the portal's calendar,
-creating new events, updating changed ones, and removing deleted ones.
+association's Vantaca/CAMS resident portal, with **no manual work**. It's
+designed to run on a daily schedule via GitHub Actions, mirroring the portal's
+calendar into Google Calendar, creating new events, updating changed ones, and
+removing deleted ones.
 
 ## The problem
 
@@ -24,8 +25,8 @@ On each run, it automatically:
    - changed events are **updated**
    - events removed from the portal are **deleted**
 
-The result is a normal Google Calendar that always matches the portal, which
-anyone can subscribe to.
+The result is a Google Calendar that always matches the portal, which anyone
+can subscribe to.
 
 ## How it works
 
@@ -34,7 +35,7 @@ anyone can subscribe to.
 | Log in + render the JS calendar | **Playwright** (headless Chromium) |
 | Parse the event HTML | **BeautifulSoup** |
 | Read/write calendar events | **Google Calendar API** (service account) |
-| Run it daily, unattended | **GitHub Actions** (scheduled cron) |
+| Run on a daily schedule | **GitHub Actions** (scheduled cron) |
 
 The sync is **idempotent** — each Google event is tagged with the portal's
 unique event ID (via `extendedProperties`), so re-running never creates
@@ -59,12 +60,15 @@ playwright install chromium
 python sync.py
 ```
 
-Automated run: the included GitHub Actions workflow
-(`.github/workflows/sync.yml`) is set up to run it on a daily schedule (and can be triggered by hand). 
-Add the secrets under Settings → Secrets and variables → Actions to enable it.
+Scheduled run: the included GitHub Actions workflow
+(`.github/workflows/sync.yml`) is set up to run it on a daily schedule and can
+also be triggered by hand. To enable it, add the secrets above under
+**Settings → Secrets and variables → Actions**.
 
 ## Notes
 
+- A personal project, built and tested end to end to solve a real problem and
+  learn the stack; not currently deployed live.
 - Built for my own homeowners' association; portal specifics are particular to
   the Vantaca/CAMS platform.
 - No credentials or calendar IDs are stored in the code — everything sensitive
