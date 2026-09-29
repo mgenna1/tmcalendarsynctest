@@ -1,0 +1,33 @@
+name: Vantaca Calendar Sync
+
+on:
+  schedule:
+    - cron: '0 13 * * *'   # 9:00 AM ET daily (UTC-4)
+  workflow_dispatch:         # allow manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Run sync
+        env:
+          CAMS_USER:                   ${{ secrets.CAMS_USER }}
+          CAMS_PASS:                   ${{ secrets.CAMS_PASS }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_CALENDAR_NAME:        "Community Calendar (CAMS)"
+        run: python sync.py
