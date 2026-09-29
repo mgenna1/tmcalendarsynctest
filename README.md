@@ -1,8 +1,8 @@
 # Vantaca → Google Calendar Sync
 
 A Python automation that keeps a Google Calendar in sync with a community
-association's Vantaca/CAMS resident portal, with **no manual work**. It runs on
-a schedule in the cloud and mirrors the portal's calendar into Google Calendar,
+association's Vantaca/CAMS resident portal, with **no manual work**. It's 
+designed to run on a daily schedule via GitHub Actions, mirroring the portal's calendar,
 creating new events, updating changed ones, and removing deleted ones.
 
 ## The problem
@@ -13,7 +13,7 @@ to miss and impossible to see alongside everyone's normal Google Calendar.
 
 ## What it does
 
-Once a day, automatically:
+On each run, it automatically:
 
 1. **Logs into** the portal and loads the calendar (a headless browser, since
    the calendar is rendered by JavaScript inside an iframe).
@@ -60,8 +60,8 @@ python sync.py
 ```
 
 Automated run: the included GitHub Actions workflow
-(`.github/workflows/sync.yml`) runs it every morning and can also be triggered
-by hand. Credentials are stored as encrypted GitHub Actions secrets.
+(`.github/workflows/sync.yml`) is set up to run it on a daily schedule (and can be triggered by hand). 
+Add the secrets under Settings → Secrets and variables → Actions to enable it.
 
 ## Notes
 
